@@ -20,7 +20,6 @@ namespace Royale.Tests
             AllPages.Init();
             Driver.GoTo("statsroyale.com");
             Driver.WindowMaximize();
-            //test
         }
 
         [TearDown]
