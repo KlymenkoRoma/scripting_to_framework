@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,9 +11,12 @@ namespace Framework.Selenium
     {
         [ThreadStatic] public static IWebDriver _driver;
 
+        [ThreadStatic] public static Wait Wait;
+
         public static void Init()
         {
             _driver = new ChromeDriver();
+            Wait = new Wait(10);
         }
 
         public static IWebDriver Current => _driver ?? throw new NullReferenceException("_driver is null.");

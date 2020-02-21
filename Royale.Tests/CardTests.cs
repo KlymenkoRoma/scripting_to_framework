@@ -8,6 +8,7 @@ using Royale.Pages;
 using Framework.Models;
 using Framework.Services;
 using Framework.Selenium;
+using System.Collections.Generic;
 
 namespace Royale.Tests
 {
@@ -17,7 +18,7 @@ namespace Royale.Tests
         public void BeforeEach()
         {
             Driver.Init();
-            AllPages.Init();
+            Pages.AllPages.Init();
             Driver.GoTo("statsroyale.com");
             Driver.WindowMaximize();
         }
@@ -28,26 +29,25 @@ namespace Royale.Tests
             Driver.Quit();
         }
 
-        static string[] cardNames = { "Ice Spirit", "Mirror" };
+        static IList<Card> apiCards = new APICardService().GetAllCards();
 
         [Test, Category("cards")]
-        [TestCaseSource("cardNames")]
+        [TestCaseSource("apiCards")]
         [Parallelizable(ParallelScope.Children)]
-        public void Card_is_on_Cards_Page(string cardName)
+        public void Card_is_on_Cards_Page(Card card)
         {
-            var card = AllPages.Cards.GoTo().GetCardByName(cardName);
-            Assert.That(card.Displayed);
+            var cardOnPage = Pages.AllPages.Cards.GoTo().GetCardByName(card.Name);
+            Assert.That(cardOnPage.Displayed);
         }
 
         [Test, Category("cards_details")]
-        [TestCaseSource("cardNames")]
+        [TestCaseSource("apiCards")]
         [Parallelizable(ParallelScope.Children)]
-        public void Card_headers_are_correct_on_Cards_Details_Page(string cardName)
+        public void Card_headers_are_correct_on_Cards_Details_Page(Card card)
         {
-            AllPages.Cards.GoTo().GetCardByName(cardName).Click();
+            Pages.AllPages.Cards.GoTo().GetCardByName(card.Name).Click();
 
-            var cardOnPage = AllPages.CardDetails.GetBaseCard();
-            var card = new InMemoryCardService().GetCardByName(cardName);
+            var cardOnPage = Pages.AllPages.CardDetails.GetBaseCard();
 
             Assert.AreEqual(card.Name, cardOnPage.Name);
             Assert.AreEqual(card.Type, cardOnPage.Type);
