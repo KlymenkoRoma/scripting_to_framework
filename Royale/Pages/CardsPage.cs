@@ -36,6 +36,6 @@ namespace Royale.Pages
 
     public class CardsPageMap
     {
-        public IWebElement Card(string name) { return Driver.FindElement(By.CssSelector($"a[href*='{name}']")); }
+        public Element Card(string name) { return Driver.FindElement(By.CssSelector($"a[href*='{name}']"), $"Card: {name}"); }
     }
 }

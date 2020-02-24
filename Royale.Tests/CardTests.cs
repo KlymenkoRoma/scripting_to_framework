@@ -9,15 +9,23 @@ using Framework.Models;
 using Framework.Services;
 using Framework.Selenium;
 using System.Collections.Generic;
+using Framework;
 
 namespace Royale.Tests
 {
     public class CardTests
     {
+        [OneTimeSetUp]
+        public void BeforeAll()
+        {
+            FW.CreateTestResultsDirectory();
+        }
+
         [SetUp]
         public void BeforeEach()
         {
-            Driver.Init();
+            FW.SetLogger();
+            Driver.Init("chrome");
             Pages.AllPages.Init();
             Driver.GoTo("statsroyale.com");
             Driver.WindowMaximize();

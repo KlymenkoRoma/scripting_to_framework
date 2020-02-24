@@ -1,19 +1,28 @@
 ﻿using Framework.Selenium;
+using Framework;
 using NUnit.Framework;
 using OpenQA.Selenium.Support.UI;
 using Royale.Pages;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Royale.Tests
 {
     public class CopyDeckTests
     {
+        [OneTimeSetUp]
+        public void BeforeAll()
+        {
+            FW.CreateTestResultsDirectory();
+        }
+
         [SetUp]
         public void BeforeEach()
         {
-            Driver.Init();
+            FW.SetLogger();
+            Driver.Init("chrome");
             AllPages.Init();
             Driver.GoTo("statsroyale.com");
             Driver.WindowMaximize();
@@ -25,7 +34,7 @@ namespace Royale.Tests
             Driver.Quit();
         }
 
-        [Test]
+        [Test, Category("Copy_deck")]
         public void User_can_copy_the_deck()
         {
             AllPages.DeckBuilder.GoTo().AddCardsManually();
@@ -40,6 +49,9 @@ namespace Royale.Tests
             AllPages.DeckBuilder.GoTo().AddCardsManually();
             AllPages.DeckBuilder.CopySuggestedDeck();
             AllPages.CopyDeck.No().OpenAppStore();
+
+            var title = Regex.Replace(Driver.Title, @"\u0200e", string.Empty);
+
             Assert.That(Driver.Title, Is.EqualTo("Clash Royale on the App Store"));
         }
 

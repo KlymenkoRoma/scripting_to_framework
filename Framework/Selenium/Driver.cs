@@ -9,13 +9,15 @@ namespace Framework.Selenium
 {
     public static class Driver
     {
-        [ThreadStatic] public static IWebDriver _driver;
+        [ThreadStatic] 
+        public static IWebDriver _driver;
 
-        [ThreadStatic] public static Wait Wait;
+        [ThreadStatic] 
+        public static Wait Wait;
 
-        public static void Init()
+        public static void Init(string browserName)
         {
-            _driver = new ChromeDriver();
+            _driver = DriverFactory.Build(browserName);
             Wait = new Wait(10);
         }
 
@@ -29,21 +31,29 @@ namespace Framework.Selenium
                 url = $"http://{url}";
             }
 
+            FW.Log.Info(url);
             Current.Navigate().GoToUrl(url);
         }
 
-        public static IWebElement FindElement(By by)
+        public static Element FindElement(By by, string elementName)
         {
-            return Current.FindElement(by);
+            return new Element(Current.FindElement(by), elementName)
+            {
+                FoundBy = by
+            };
         }
 
-        public static IList<IWebElement> FindElements(By by)
+        public static Elements FindElements(By by)
         {
-            return Current.FindElements(by);
+            return new Elements(Current.FindElements(by))
+            {
+                FoundBy = by
+            };
         }
 
         public static void Quit()
         {
+            FW.Log.Info("Close Browser");
             Current.Quit();
         }
 
