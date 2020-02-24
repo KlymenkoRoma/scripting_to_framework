@@ -1,0 +1,10 @@
+{
+	"driver": {
+		"browser": "chrome",
+		"wait": 10
+	},
+
+	"test": {
+		"url": "statsroyale.com"
+	}
+}

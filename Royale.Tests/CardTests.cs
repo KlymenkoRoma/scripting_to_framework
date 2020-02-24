@@ -10,33 +10,12 @@ using Framework.Services;
 using Framework.Selenium;
 using System.Collections.Generic;
 using Framework;
+using Royale.Tests.Base;
 
 namespace Royale.Tests
 {
-    public class CardTests
+    public class CardTests : TestBase
     {
-        [OneTimeSetUp]
-        public void BeforeAll()
-        {
-            FW.CreateTestResultsDirectory();
-        }
-
-        [SetUp]
-        public void BeforeEach()
-        {
-            FW.SetLogger();
-            Driver.Init("chrome");
-            Pages.AllPages.Init();
-            Driver.GoTo("statsroyale.com");
-            Driver.WindowMaximize();
-        }
-
-        [TearDown]
-        public void AfterEach()
-        {
-            Driver.Quit();
-        }
-
         static IList<Card> apiCards = new APICardService().GetAllCards();
 
         [Test, Category("cards")]

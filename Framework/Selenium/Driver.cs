@@ -3,6 +3,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Framework.Selenium
@@ -15,10 +16,10 @@ namespace Framework.Selenium
         [ThreadStatic] 
         public static Wait Wait;
 
-        public static void Init(string browserName)
+        public static void Init()
         {
-            _driver = DriverFactory.Build(browserName);
-            Wait = new Wait(10);
+            _driver = DriverFactory.Build(FW.Config.Driver.Browser);
+            Wait = new Wait(FW.Config.Driver.Wait);
         }
 
         public static IWebDriver Current => _driver ?? throw new NullReferenceException("_driver is null.");
@@ -49,6 +50,13 @@ namespace Framework.Selenium
             {
                 FoundBy = by
             };
+        }
+
+        public static void TakeScreenshot(string imageName)
+        {
+            var ss = ((ITakesScreenshot)Current).GetScreenshot();
+            var ssFileName = Path.Combine(FW.CurrentTestDirectory.FullName, imageName);
+            ss.SaveAsFile($"{ssFileName}.png", ScreenshotImageFormat.Png);
         }
 
         public static void Quit()

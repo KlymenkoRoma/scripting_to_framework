@@ -7,34 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using Royale.Tests.Base;
 
 namespace Royale.Tests
 {
-    public class CopyDeckTests
+    public class CopyDeckTests : TestBase
     {
-        [OneTimeSetUp]
-        public void BeforeAll()
-        {
-            FW.CreateTestResultsDirectory();
-        }
-
-        [SetUp]
-        public void BeforeEach()
-        {
-            FW.SetLogger();
-            Driver.Init("chrome");
-            AllPages.Init();
-            Driver.GoTo("statsroyale.com");
-            Driver.WindowMaximize();
-        }
-
-        [TearDown]
-        public void AfterEach()
-        {
-            Driver.Quit();
-        }
-
-        [Test, Category("Copy_deck")]
+        [Test, Category("copydeck")]
         public void User_can_copy_the_deck()
         {
             AllPages.DeckBuilder.GoTo().AddCardsManually();
@@ -43,7 +22,7 @@ namespace Royale.Tests
             Assert.That(AllPages.CopyDeck.Map.CopiedMessage.Displayed);
         }
 
-        [Test]
+        [Test, Category("copydeck")]
         public void User_opens_app_store()
         {
             AllPages.DeckBuilder.GoTo().AddCardsManually();
@@ -55,7 +34,7 @@ namespace Royale.Tests
             Assert.That(Driver.Title, Is.EqualTo("Clash Royale on the App Store"));
         }
 
-        [Test]
+        [Test, Category("copydeck")]
         public void User_opens_google_play()
         {
             AllPages.DeckBuilder.GoTo().AddCardsManually();
