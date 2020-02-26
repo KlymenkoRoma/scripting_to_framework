@@ -1,6 +1,7 @@
 ﻿using Framework;
 using Framework.Selenium;
 using OpenQA.Selenium;
+using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,26 +28,24 @@ namespace Royale.Pages
         {
             Map.NoButton.Click();
             AcceptCookies();
-            Driver.Wait.Until(drvr => Map.OtherStoresButton.Displayed);
+            Driver.Wait.Until(ExpectedConditions.ElementIsVisible(Map.OtherStoresButton.FoundBy));
             return this;
         }
 
         public void AcceptCookies()
         {
-            FW.Log.Step("Click 'Accept cookies' button");
             Map.AcceptCookiesButton.Click();
-            Driver.Wait.Until(drvr => !Map.AcceptCookiesButton.Displayed);
+            //Driver.Wait.Until(drvr => !Map.AcceptCookiesButton.Displayed);
+            Driver.Wait.Until(WaitConditions.ElementNotDisplayed(Map.AcceptCookiesButton));
         }
 
         public void OpenAppStore()
         {
-            FW.Log.Step("Click AppStore link");
             Map.AppStore.Click();
         }
 
         public void OpenGooglePlay()
         {
-            FW.Log.Step("Click GooglePlay link");
             Map.GooglePlay.Click();
         }
     }

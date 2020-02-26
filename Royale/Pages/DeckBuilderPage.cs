@@ -19,14 +19,16 @@ namespace Royale.Pages
         public DeckBuilderPage GoTo()
         {
             HeaderNav.Map.DeckBuilderLink.Click();
-            Driver.Wait.Until(drvr => Map.AddCardsManuallyLink.Displayed);
             return this;
         }
 
         public void AddCardsManually()
         {
-            Map.AddCardsManuallyLink.Click();
-            Driver.Wait.Until(drvr => Map.CopyDeckIcon.Displayed);
+            //Driver.Wait.Until(drvr => Map.AddCardsManuallyLink.Displayed);
+            Driver.Wait.Until(WaitConditions.ElementIsDisplayed(Map.AddCardsManuallyLink)).Click();
+            //Map.AddCardsManuallyLink.Click();
+            //Driver.Wait.Until(drvr => Map.CopyDeckIcon.Displayed);
+            Driver.Wait.Until(WaitConditions.ElementDisplayed(Map.CopyDeckIcon));
         }
 
         public void CopySuggestedDeck()
